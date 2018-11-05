@@ -5,6 +5,9 @@ import java.util.Stack;
 public class TowersOfHanoi {
 
     private static List<Peg> pegs = new ArrayList<>();
+    private static final int NUMBER_OF_DISKS = 5;
+    private static final int NUMBER_OF_PEGS = 5;
+
 
     public void solve(int n, String start, String auxiliary, String end) {
         if (n == 1) {
@@ -23,7 +26,7 @@ public class TowersOfHanoi {
 //        int discs = scanner.nextInt();
 //        towersOfHanoi.solve(discs, "A", "B", "C");
 
-        towersOfHanoi.initializeGame(5, 6);
+        towersOfHanoi.initializeGame(NUMBER_OF_DISKS, NUMBER_OF_PEGS);
         for (Peg peg : pegs) {
             if (peg.getDisks() != null) {
                 System.out.println(peg.getNumber() + " " + peg.getDisks());
@@ -45,7 +48,7 @@ public class TowersOfHanoi {
         return true;
     }
 
-    public void initializeGame(int numberOfDisks, int numberOfPegs) {
+    private void initializeGame(int numberOfDisks, int numberOfPegs) {
         for (int index = 1; index <= numberOfPegs; index++) {
             pegs.add(new Peg(index));
         }
