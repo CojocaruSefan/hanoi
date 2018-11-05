@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class TowersOfHanoi {
@@ -27,9 +26,15 @@ public class TowersOfHanoi {
         towersOfHanoi.initializeGame(5, 6);
         for (Peg peg : pegs) {
             if (peg.getDisks() != null) {
-                System.out.println(peg.getNumber() + " " +peg.getDisks());
-            }
-            else System.out.println(peg.getNumber() + " 0");
+                System.out.println(peg.getNumber() + " " + peg.getDisks());
+            } else System.out.println(peg.getNumber() + " 0");
+        }
+    }
+
+    public void moveDisk(Peg sourcePeg, Peg destinationPeg) {
+        if (destinationPeg.getDisks().peek().getWidth() > sourcePeg.getDisks().peek().getWidth()) {
+            Disk diskToBeMoved = sourcePeg.getDisks().pop();
+            destinationPeg.getDisks().push(diskToBeMoved);
         }
     }
 
