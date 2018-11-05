@@ -8,11 +8,11 @@ public class Peg {
     public Peg() {
     }
 
-    public Peg(int number) {
+    Peg(int number) {
         this.number = number;
     }
 
-    public int getNumber() {
+    int getNumber() {
         return number;
     }
 
@@ -20,11 +20,19 @@ public class Peg {
         this.number = number;
     }
 
-    public Stack<Disk> getDisks() {
+    Stack<Disk> getDisks() {
         return disks;
     }
 
-    public void setDisks(Stack<Disk> disks) {
+    void setDisks(Stack<Disk> disks) {
         this.disks = disks;
     }
+
+    public boolean hasDisks(){
+        if (this.getDisks().isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
 }
