@@ -1,3 +1,5 @@
+import com.sun.xml.internal.ws.server.provider.ProviderInvokerTube;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +10,7 @@ public class TowersOfHanoi {
     private static List<Peg> pegs = new ArrayList<>();
     private static final int NUMBER_OF_DISKS = 5;
     private static final int NUMBER_OF_PEGS = 5;
+    private static int NUMBER_OF_MOVES=0;
 
 
     public static void main(String[] args) {
@@ -28,6 +31,7 @@ public class TowersOfHanoi {
             } else System.out.println(peg.getNumber() + " 0");
         }
         */
+        System.out.println(NUMBER_OF_MOVES);
     }
 
     public void solve() {
@@ -47,6 +51,7 @@ public class TowersOfHanoi {
             if (destinationPeg.getDisks() != null) {
                 System.out.println(destinationPeg.getNumber() + " " + destinationPeg.getDisks());
             } else System.out.println(destinationPeg.getNumber() + " 0");
+            NUMBER_OF_MOVES++;
         }
 
     }
@@ -61,7 +66,7 @@ public class TowersOfHanoi {
 
     public boolean isMoveOk(Disk disk, Peg peg) {
         if (!peg.getDisks().isEmpty())
-            if (disk.getWidth() > peg.getDisks().pop().getWidth()) {
+            if (disk.getWidth() > peg.getDisks().peek().getWidth()) {
                 return false;
             }
         return true;
