@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class TowersOfHanoi {
@@ -34,8 +35,22 @@ public class TowersOfHanoi {
         }
     }
 
+    public void solve() {
+        Integer sourcePegNumber = (new Random()).nextInt(NUMBER_OF_PEGS) + 1;
+        Integer destinationPegNumber = (new Random()).nextInt(NUMBER_OF_PEGS) + 1;
+
+
+        Peg sourcePeg = pegs.stream()
+                .filter(peg->peg.getNumber() == sourcePegNumber).findFirst().get();
+        Peg destinationPeg = pegs.stream()
+                .filter(peg->peg.getNumber() == destinationPegNumber).findFirst().get();
+        if(sourcePeg != destinationPeg){
+            moveDisk(sourcePeg, destinationPeg);
+        }
+    }
+
     public void moveDisk(Peg sourcePeg, Peg destinationPeg) {
-        if (destinationPeg.getDisks().peek().getWidth() > sourcePeg.getDisks().peek().getWidth()) {
+        if (isMoveOk(sourcePeg.getDisks().peek(), destinationPeg)) {
             Disk diskToBeMoved = sourcePeg.getDisks().pop();
             destinationPeg.getDisks().push(diskToBeMoved);
         }
