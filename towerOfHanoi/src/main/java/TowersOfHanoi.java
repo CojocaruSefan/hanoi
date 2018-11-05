@@ -1,5 +1,3 @@
-import com.sun.xml.internal.ws.server.provider.ProviderInvokerTube;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,33 +6,22 @@ import java.util.Stack;
 public class TowersOfHanoi {
 
     private static List<Peg> pegs = new ArrayList<>();
-    private static final int NUMBER_OF_DISKS = 5;
-    private static final int NUMBER_OF_PEGS = 5;
+    private static final int NUMBER_OF_DISKS = 3;
+    private static final int NUMBER_OF_PEGS = 20;
     private static int NUMBER_OF_MOVES=0;
 
 
     public static void main(String[] args) {
         TowersOfHanoi towersOfHanoi = new TowersOfHanoi();
-//        System.out.print("Enter number of discs: ");
-//        Scanner scanner = new Scanner(System.in);
-//        int discs = scanner.nextInt();
-//        towersOfHanoi.solve(discs, "A", "B", "C");
 
         towersOfHanoi.initializeGame(NUMBER_OF_DISKS, NUMBER_OF_PEGS);
         while (!towersOfHanoi.isFinal()) {
             towersOfHanoi.solve();
         }
-        /*
-        for (Peg peg : pegs) {
-            if (peg.getDisks() != null) {
-                System.out.println(peg.getNumber() + " " + peg.getDisks());
-            } else System.out.println(peg.getNumber() + " 0");
-        }
-        */
         System.out.println(NUMBER_OF_MOVES);
     }
 
-    public void solve() {
+    private void solve() {
         Integer sourcePegNumber = (new Random()).nextInt(NUMBER_OF_PEGS) + 1;
         Integer destinationPegNumber = (new Random()).nextInt(NUMBER_OF_PEGS) + 1;
 
@@ -43,29 +30,40 @@ public class TowersOfHanoi {
                 .filter(peg -> peg.getNumber() == sourcePegNumber).findFirst().get();
         Peg destinationPeg = pegs.stream()
                 .filter(peg -> peg.getNumber() == destinationPegNumber).findFirst().get();
-        if (sourcePeg != destinationPeg && !sourcePeg.getDisks().isEmpty()) {
+        if (sourcePeg != destinationPeg && sourcePeg.hasDisks()) {
             moveDisk(sourcePeg, destinationPeg);
-            if (sourcePeg.getDisks() != null) {
-                System.out.println(sourcePeg.getNumber() + " " + sourcePeg.getDisks());
-            } else System.out.println(sourcePeg.getNumber() + " 0");
-            if (destinationPeg.getDisks() != null) {
-                System.out.println(destinationPeg.getNumber() + " " + destinationPeg.getDisks());
-            } else System.out.println(destinationPeg.getNumber() + " 0");
-            NUMBER_OF_MOVES++;
+            printPeg(sourcePeg);
+            printPeg(destinationPeg);
         }
 
     }
 
-    public void moveDisk(Peg sourcePeg, Peg destinationPeg) {
-        if (!sourcePeg.getDisks().isEmpty())
+    private void printGame(){
+        for (Peg peg : pegs) {
+            if (peg.getDisks() != null) {
+                System.out.println(peg.getNumber() + " " + peg.getDisks());
+            } else System.out.println(peg.getNumber() + " 0");
+        }
+    }
+
+    private void printPeg(Peg peg){
+        if (peg.hasDisks()) {
+            System.out.println(peg.getNumber() + " " + peg.getDisks());
+        } else System.out.println(peg.getNumber() + " 0");
+    }
+
+    private void moveDisk(Peg sourcePeg, Peg destinationPeg) {
+        if (sourcePeg.hasDisks())
             if (isMoveOk(sourcePeg.getDisks().peek(), destinationPeg)) {
                 Disk diskToBeMoved = sourcePeg.getDisks().pop();
                 destinationPeg.getDisks().push(diskToBeMoved);
+                NUMBER_OF_MOVES++;
             }
+
     }
 
     public boolean isMoveOk(Disk disk, Peg peg) {
-        if (!peg.getDisks().isEmpty())
+        if (peg.hasDisks())
             if (disk.getWidth() > peg.getDisks().peek().getWidth()) {
                 return false;
             }
@@ -89,16 +87,16 @@ public class TowersOfHanoi {
         firstPeg.setDisks(disks);
     }
 
-    public boolean isFinal() {
+    private boolean isFinal() {
         Peg lastPeg = pegs.stream().filter(peg -> peg.getNumber() == NUMBER_OF_PEGS).findFirst().get();
-        if (lastPeg.getDisks().isEmpty()) {
+        if (!lastPeg.hasDisks()) {
             return false;
         }
         for (Peg p : pegs) {
-            if (!p.getDisks().isEmpty() && p.getNumber() != NUMBER_OF_PEGS)
+            if (p.hasDisks() && p.getNumber() != NUMBER_OF_PEGS)
                 return false;
         }
         return true;
-
     }
+
 }
