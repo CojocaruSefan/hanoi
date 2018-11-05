@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class TowersOfHanoi {
 
-    List<Peg> pegs = new ArrayList<>();
+    private static List<Peg> pegs = new ArrayList<>();
 
     public void solve(int n, String start, String auxiliary, String end) {
         if (n == 1) {
@@ -18,10 +19,18 @@ public class TowersOfHanoi {
 
     public static void main(String[] args) {
         TowersOfHanoi towersOfHanoi = new TowersOfHanoi();
-        System.out.print("Enter number of discs: ");
-        Scanner scanner = new Scanner(System.in);
-        int discs = scanner.nextInt();
-        towersOfHanoi.solve(discs, "A", "B", "C");
+//        System.out.print("Enter number of discs: ");
+//        Scanner scanner = new Scanner(System.in);
+//        int discs = scanner.nextInt();
+//        towersOfHanoi.solve(discs, "A", "B", "C");
+
+        towersOfHanoi.initializeGame(5, 6);
+        for (Peg peg : pegs) {
+            if (peg.getDisks() != null) {
+                System.out.println(peg.getNumber() + " " +peg.getDisks());
+            }
+            else System.out.println(peg.getNumber() + " 0");
+        }
     }
 
     public boolean isMoveOk(Disk disk, Peg peg) {
@@ -35,10 +44,12 @@ public class TowersOfHanoi {
         for (int index = 1; index <= numberOfPegs; index++) {
             pegs.add(new Peg(index));
         }
+        Stack<Disk> disks = new Stack<>();
+        for (int index = numberOfDisks; index >= 1; index--) {
+            disks.push(new Disk(index));
+        }
         Peg firstPeg = pegs.stream()
                 .filter(peg -> peg.getNumber() == 1).findFirst().get();
-        for (int index = numberOfDisks; index >= 1; index--) {
-            firstPeg.getDisks().push(new Disk(index));
-        }
+        firstPeg.setDisks(disks);
     }
 }

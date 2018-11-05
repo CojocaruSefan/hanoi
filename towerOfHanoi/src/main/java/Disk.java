@@ -16,4 +16,11 @@ public class Disk {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    @Override
+    public String toString() {
+        return "Disk{" +
+                "width=" + width +
+                '}';
+    }
 }
