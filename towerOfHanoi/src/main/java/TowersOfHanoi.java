@@ -1,3 +1,5 @@
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -6,9 +8,10 @@ import java.util.Stack;
 public class TowersOfHanoi {
 
     private static List<Peg> pegs = new ArrayList<>();
-    private static final int NUMBER_OF_DISKS = 3;
-    private static final int NUMBER_OF_PEGS = 20;
-    private static int NUMBER_OF_MOVES=0;
+    private static final int NUMBER_OF_DISKS = 5;
+    private static final int NUMBER_OF_PEGS = 3;
+    private static int NUMBER_OF_MOVES = 0;
+    private static int NUMBER_OF_RESETS = 0;
 
 
     public static void main(String[] args) {
@@ -16,9 +19,16 @@ public class TowersOfHanoi {
 
         towersOfHanoi.initializeGame(NUMBER_OF_DISKS, NUMBER_OF_PEGS);
         while (!towersOfHanoi.isFinal()) {
+            if (NUMBER_OF_MOVES > (Math.pow(2,NUMBER_OF_DISKS)-1)) {
+                NUMBER_OF_MOVES = 0;
+                System.out.println("game reset");
+                NUMBER_OF_RESETS++;
+                towersOfHanoi.initializeGame(NUMBER_OF_DISKS, NUMBER_OF_PEGS);
+            }
             towersOfHanoi.solve();
         }
         System.out.println(NUMBER_OF_MOVES);
+        System.out.println(NUMBER_OF_RESETS);
     }
 
     private void solve() {
@@ -38,7 +48,7 @@ public class TowersOfHanoi {
 
     }
 
-    private void printGame(){
+    private void printGame() {
         for (Peg peg : pegs) {
             if (peg.getDisks() != null) {
                 System.out.println(peg.getNumber() + " " + peg.getDisks());
@@ -46,7 +56,7 @@ public class TowersOfHanoi {
         }
     }
 
-    private void printPeg(Peg peg){
+    private void printPeg(Peg peg) {
         if (peg.hasDisks()) {
             System.out.println(peg.getNumber() + " " + peg.getDisks());
         } else System.out.println(peg.getNumber() + " 0");
@@ -71,6 +81,7 @@ public class TowersOfHanoi {
     }
 
     private void initializeGame(int numberOfDisks, int numberOfPegs) {
+        pegs=new ArrayList<>();
         for (int index = 1; index <= numberOfPegs; index++) {
 
             Peg peg = new Peg(index);
