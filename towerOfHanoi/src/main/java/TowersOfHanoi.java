@@ -7,7 +7,6 @@ public class TowersOfHanoi implements Serializable {
 
     final static int NUMBER_OF_DISKS = 3;
     final static int NUMBER_OF_PEGS = 3;
-//    final double OPTIMAL_NO_OF_MOVES = Math.pow(2, NUMBER_OF_DISKS) - 1;
 
     List<Peg> pegs;
     List<Move> moves;
@@ -24,7 +23,7 @@ public class TowersOfHanoi implements Serializable {
 
     public static void main(String[] args) {
         TowersOfHanoi towersOfHanoi = new TowersOfHanoi();
-//        towersOfHanoi.hillClimbing(30);
+        towersOfHanoi.hillClimbing(30);
         towersOfHanoi.IDS();
     }
 
@@ -122,9 +121,9 @@ public class TowersOfHanoi implements Serializable {
             return null;
 
         List<Move> allPossibleMoves = this.getAllPossibleMoves();
-//        allPossibleMoves.forEach(move -> {
-//            System.out.println(move.getStart().getNumber()+ " -> "+move.getFinish().getNumber()+": "+move.getDisk().getWidth());
-//        });
+        allPossibleMoves.forEach(move -> {
+            System.out.println(move.getStart().getNumber()+ " -> "+move.getFinish().getNumber()+": "+move.getDisk().getWidth());
+        });
 
         for (Move move : allPossibleMoves) {
             TowersOfHanoi newTowerOfHanoi = (TowersOfHanoi) SerializationUtils.clone(this);
@@ -135,11 +134,11 @@ public class TowersOfHanoi implements Serializable {
             Move newMove = new Move(startingPeg, endingPeg);
             newTowerOfHanoi.moves.add(newMove);
             newMove.executeMove();
-//            System.out.println("Depth=" + depth);
-//            System.out.print("Move executed: " );
-//            System.out.println(move.getStart().getNumber()+ " -> "+move.getFinish().getNumber()+": "+move.getDisk().getWidth());
-//
-//            newTowerOfHanoi.printGame();
+            System.out.println("Depth=" + depth);
+            System.out.print("Move executed: " );
+            System.out.println(move.getStart().getNumber()+ " -> "+move.getFinish().getNumber()+": "+move.getDisk().getWidth());
+
+            newTowerOfHanoi.printGame();
             TowersOfHanoi result = newTowerOfHanoi.DLS(depth - 1);
             if (result != null)
                 return result;
