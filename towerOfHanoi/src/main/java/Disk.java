@@ -1,4 +1,6 @@
-public class Disk {
+import java.io.Serializable;
+
+public class Disk implements Serializable {
 
     private int width;
 

@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class Move {
+public class Move implements Serializable {
     private Peg start;
     private Peg finish;
     private Disk disk;

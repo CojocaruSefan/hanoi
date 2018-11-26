@@ -1,19 +1,31 @@
+import org.apache.commons.lang.SerializationUtils;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class TowersOfHanoi {
+public class TowersOfHanoi implements Serializable {
 
-    final int NUMBER_OF_DISKS = 5;
-    final int NUMBER_OF_PEGS = 3;
+    final static int NUMBER_OF_DISKS = 3;
+    final static int NUMBER_OF_PEGS = 3;
 //    final double OPTIMAL_NO_OF_MOVES = Math.pow(2, NUMBER_OF_DISKS) - 1;
 
     List<Peg> pegs;
     List<Move> moves;
     Peg lastPeg;
 
+    public TowersOfHanoi() {
+    }
+
+    public TowersOfHanoi(List<Peg> pegs, List<Move> moves, Peg lastPeg) {
+        this.pegs = new ArrayList<>(pegs);
+        this.moves = new ArrayList<>(moves);
+        this.lastPeg = this.pegs.stream().filter(peg -> peg.getNumber() == NUMBER_OF_PEGS).findFirst().get();
+    }
 
     public static void main(String[] args) {
         TowersOfHanoi towersOfHanoi = new TowersOfHanoi();
-        towersOfHanoi.hillClimbing(30);
+//        towersOfHanoi.hillClimbing(30);
+        towersOfHanoi.IDS();
     }
 
 
@@ -87,6 +99,54 @@ public class TowersOfHanoi {
         System.out.println("Minimum number of moves: " + minimumNumberOfMoves);
     }
 
+
+    private TowersOfHanoi IDS() {
+
+        int depth = 0;
+        boolean found = false;
+        initializeGame(NUMBER_OF_DISKS, NUMBER_OF_PEGS);
+        TowersOfHanoi result = null;
+
+        while (result == null && depth < 20) {
+            depth++;
+            result = this.DLS(depth);
+        }
+        System.out.println("IDS: Total number of moves for first finalized game found:" + depth);
+        return result;
+    }
+
+    private TowersOfHanoi DLS(int depth) {
+        if (this.isFinal())
+            return this;
+        if (depth == 0)
+            return null;
+
+        List<Move> allPossibleMoves = this.getAllPossibleMoves();
+//        allPossibleMoves.forEach(move -> {
+//            System.out.println(move.getStart().getNumber()+ " -> "+move.getFinish().getNumber()+": "+move.getDisk().getWidth());
+//        });
+
+        for (Move move : allPossibleMoves) {
+            TowersOfHanoi newTowerOfHanoi = (TowersOfHanoi) SerializationUtils.clone(this);
+            Peg startingPeg = newTowerOfHanoi.pegs.stream()
+                    .filter(peg -> peg.getNumber() == move.getStart().getNumber()).findFirst().get();
+            Peg endingPeg = newTowerOfHanoi.pegs.stream()
+                    .filter(peg -> peg.getNumber() == move.getFinish().getNumber()).findFirst().get();
+            Move newMove = new Move(startingPeg, endingPeg);
+            newTowerOfHanoi.moves.add(newMove);
+            newMove.executeMove();
+//            System.out.println("Depth=" + depth);
+//            System.out.print("Move executed: " );
+//            System.out.println(move.getStart().getNumber()+ " -> "+move.getFinish().getNumber()+": "+move.getDisk().getWidth());
+//
+//            newTowerOfHanoi.printGame();
+            TowersOfHanoi result = newTowerOfHanoi.DLS(depth - 1);
+            if (result != null)
+                return result;
+        }
+        return null;
+    }
+
     private List<Move> getAllPossibleMoves() {
         List<Move> moveList = new ArrayList<>();
         for (Peg startingPeg : pegs)
@@ -96,6 +156,27 @@ public class TowersOfHanoi {
                     if (move.isOk())
                         moveList.add(move);
                 }
+
         return moveList;
+    }
+
+    @Override
+    public String toString() {
+        return "TowersOfHanoi{" +
+                "pegs=" + pegs +
+                ", moves=" + moves +
+                ", lastPeg=" + lastPeg +
+                '}';
+    }
+
+    public void printGame() {
+        int i = 1;
+        for (Peg peg : this.pegs) {
+            System.out.print("[PEG" + i + "]: DISKS: ");
+            i++;
+            for (Disk disk : peg.getDisks())
+                System.out.print(disk.getWidth() + ", ");
+            System.out.println();
+        }
     }
 }

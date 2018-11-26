@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Stack;
 
-public class Peg {
+public class Peg implements Serializable {
 
     private int number;
     private Stack<Disk> disks;
@@ -27,6 +28,11 @@ public class Peg {
 
     void setDisks(Stack<Disk> disks) {
         this.disks = disks;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public boolean hasDisks(){
