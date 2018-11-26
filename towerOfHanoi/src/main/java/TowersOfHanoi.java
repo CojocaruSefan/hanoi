@@ -89,12 +89,13 @@ public class TowersOfHanoi {
 
     private List<Move> getAllPossibleMoves() {
         List<Move> moveList = new ArrayList<>();
-        for(Peg startingPeg : pegs)
-            for(Peg destinationPeg : pegs)
-                if(!startingPeg.equals(destinationPeg)){
+        for (Peg startingPeg : pegs)
+            for (Peg destinationPeg : pegs)
+                if (!startingPeg.equals(destinationPeg)) {
                     Move move = new Move(startingPeg, destinationPeg);
-                    if(move.isOk())
+                    if (move.isOk())
                         moveList.add(move);
                 }
+        return moveList;
     }
 }
