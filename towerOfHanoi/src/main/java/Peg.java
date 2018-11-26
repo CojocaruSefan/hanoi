@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Stack;
 
 public class Peg {
@@ -35,4 +36,17 @@ public class Peg {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Peg peg = (Peg) o;
+        return number == peg.number &&
+                Objects.equals(disks, peg.disks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, disks);
+    }
 }

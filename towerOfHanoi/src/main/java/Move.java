@@ -57,8 +57,8 @@ public class Move {
         if (!moveList.isEmpty()) {
 
             //check if we are in a loop
-            if (moveList.size() > 2)
-                if (this.equals(moveList.get(moveList.size() - 2))) {
+            for(int n=1; 2*n < moveList.size(); n++)
+                if (this.equals(moveList.get(moveList.size() - 2*n))) {
                     return 0; //the move is VERY BAD, exit immediately
                 }
             //check if we're going back a move

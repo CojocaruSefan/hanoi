@@ -87,4 +87,14 @@ public class TowersOfHanoi {
         System.out.println("Minimum number of moves: " + minimumNumberOfMoves);
     }
 
+    private List<Move> getAllPossibleMoves() {
+        List<Move> moveList = new ArrayList<>();
+        for(Peg startingPeg : pegs)
+            for(Peg destinationPeg : pegs)
+                if(!startingPeg.equals(destinationPeg)){
+                    Move move = new Move(startingPeg, destinationPeg);
+                    if(move.isOk())
+                        moveList.add(move);
+                }
+    }
 }
