@@ -2,8 +2,8 @@ import java.util.*;
 
 public class TowersOfHanoi {
 
-    final int NUMBER_OF_DISKS = 4;
-    final int NUMBER_OF_PEGS = 5;
+    final int NUMBER_OF_DISKS = 5;
+    final int NUMBER_OF_PEGS = 3;
 //    final double OPTIMAL_NO_OF_MOVES = Math.pow(2, NUMBER_OF_DISKS) - 1;
 
     List<Peg> pegs;
@@ -13,7 +13,7 @@ public class TowersOfHanoi {
 
     public static void main(String[] args) {
         TowersOfHanoi towersOfHanoi = new TowersOfHanoi();
-        towersOfHanoi.hillClimbing(15);
+        towersOfHanoi.hillClimbing(30);
     }
 
 
@@ -50,6 +50,9 @@ public class TowersOfHanoi {
 
     private void hillClimbing(int noOfIterations) {
 
+        System.out.println("HillClimbing:");
+        int minimumNumberOfMoves = Integer.MAX_VALUE;
+
         for (int i = 0; i < noOfIterations; i++) {
             this.initializeGame(NUMBER_OF_DISKS, NUMBER_OF_PEGS);
             while (!this.isFinal()) {
@@ -57,7 +60,7 @@ public class TowersOfHanoi {
 
                 boolean isCurrentMoveBest = true;
                 do {
-                    int numberOfNeighbours = 10;
+                    int numberOfNeighbours = NUMBER_OF_PEGS;
                     isCurrentMoveBest = true;
                     Move currentMove = new Move(this);
                     while (numberOfNeighbours > 0) {
@@ -76,8 +79,12 @@ public class TowersOfHanoi {
                 bestMove.executeMove();
                 moves.add(bestMove);
             }
-            System.out.println("iteration "+ i+" :" + moves.size());
+            System.out.println("Iteration no. " + i + " :" + moves.size() + " moves");
+            if (minimumNumberOfMoves > moves.size()) {
+                minimumNumberOfMoves = moves.size();
+            }
         }
+        System.out.println("Minimum number of moves: " + minimumNumberOfMoves);
     }
 
 }
